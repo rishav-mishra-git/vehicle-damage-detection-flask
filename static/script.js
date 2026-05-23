@@ -1,4 +1,3 @@
-
 async function uploadImage() {
 
     const input = document.getElementById("imageInput");
