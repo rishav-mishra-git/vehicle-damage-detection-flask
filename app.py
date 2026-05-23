@@ -1,59 +1,3 @@
-from flask import Flask, render_template, request, jsonify
-import requests
-import os
-
-app = Flask(__name__)
-
-
-# ROBOFLOW CONFIG
-
-
-API_KEY = "9PU75Z9tiNgXhZlgx5cW"
-
-MODEL_URL = "https://detect.roboflow.com/car_dent_scratch_detection-1-mczqd/1"
-
-UPLOAD_FOLDER = "uploads"
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-# DAMAGE COST DATABASE
-
-
-damage_costs = {
-
-    "bonnet-dent": 4500,
-    "boot-dent": 4000,
-    "doorouter-dent": 5000,
-    "fender-dent": 3500,
-    "front-bumper-dent": 6000,
-    "rear-bumper-dent": 5500,
-    "quarterpanel-dent": 6500,
-    "roof-dent": 7000,
-    "pillar-dent": 4500,
-    "RunningBoard-Dent": 3000,
-
-    "Front-Windscreen-Damage": 15000,
-    "Rear-windscreen-Damage": 12000,
-
-    "Headlight-Damage": 8000,
-    "Signlight-Damage": 3000,
-    "Taillight-Damage": 5000,
-    "Sidemirror-Damage": 3500,
-}
-
-
-# HOME PAGE
-
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-# PREDICT API
-
-
 @app.route("/predict", methods=["POST"])
 def predict():
 
@@ -69,6 +13,8 @@ def predict():
 
     file.save(file_path)
 
+    # SEND IMAGE TO ROBOFLOW
+
     with open(file_path, "rb") as image_file:
 
         response = requests.post(
@@ -80,9 +26,18 @@ def predict():
 
     predictions = result.get("predictions", [])
 
+    
+    # LOAD IMAGE USING PIL
+
+    image = Image.open(file_path).convert("RGB")
+
+    draw = ImageDraw.Draw(image)
+
     total_cost = 0
 
     damage_report = []
+
+    # DRAW BOXES
 
     for p in predictions:
 
@@ -90,6 +45,18 @@ def predict():
 
         if confidence < 0.40:
             continue
+
+        x = p["x"]
+        y = p["y"]
+
+        width = p["width"]
+        height = p["height"]
+
+        x1 = x - width / 2
+        y1 = y - height / 2
+
+        x2 = x + width / 2
+        y2 = y + height / 2
 
         damage_class = p["class"]
 
@@ -100,6 +67,24 @@ def predict():
 
         total_cost += cost
 
+        # DRAW RECTANGLE
+
+        draw.rectangle(
+            [x1, y1, x2, y2],
+            outline="red",
+            width=4
+        )
+
+        # DRAW LABEL
+
+        label = f"{damage_class} ({confidence:.2f})"
+
+        draw.text(
+            (x1, y1 - 20),
+            label,
+            fill="red"
+        )
+
         damage_report.append({
 
             "damage": damage_class,
@@ -107,15 +92,20 @@ def predict():
             "cost": cost
         })
 
+    
+    # SAVE RESULT IMAGE
+   
+
+    result_path = os.path.join(
+        UPLOAD_FOLDER,
+        "result_" + file.filename
+    )
+
+    image.save(result_path)
+
     return jsonify({
 
         "damages": damage_report,
-        "total_cost": total_cost
+        "total_cost": total_cost,
+        "result_image": result_path
     })
-
-
-# RUN APP
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
