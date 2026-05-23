@@ -11,6 +11,21 @@ async function uploadImage() {
         return;
     }
 
+    // IMAGE PREVIEW
+
+    const previewURL = URL.createObjectURL(file);
+
+    document.getElementById("preview").innerHTML = `
+
+        <h3>Uploaded Image</h3>
+
+        <img
+            src="${previewURL}"
+            width="500"
+            style="border-radius:10px;"
+        >
+    `;
+
     document.getElementById("loading").innerHTML =
         "<p>Detecting damages...</p>";
 
@@ -21,6 +36,7 @@ async function uploadImage() {
     const response = await fetch("/predict", {
 
         method: "POST",
+
         body: formData
     });
 
@@ -28,23 +44,50 @@ async function uploadImage() {
 
     let html = "";
 
+    // RESULT IMAGE
+
     html += `
+
+        <h2>Detected Damage</h2>
+
+        <img
+            src="/${data.result_image}"
+            width="500"
+            style="border-radius:10px;"
+        >
+
         <h2>
             Total Estimated Cost:
             ₹${data.total_cost}
         </h2>
     `;
 
+    // DAMAGE DETAILS
+
     data.damages.forEach(d => {
 
         html += `
-            <p>
+
+            <div
+                style="
+                    background:#f4f4f4;
+                    padding:10px;
+                    margin:10px;
+                    border-radius:8px;
+                "
+            >
+
                 <strong>${d.damage}</strong>
-                |
+
+                <br>
+
                 Confidence: ${d.confidence}
-                |
-                Cost: ₹${d.cost}
-            </p>
+
+                <br>
+
+                Estimated Cost: ₹${d.cost}
+
+            </div>
         `;
     });
 
