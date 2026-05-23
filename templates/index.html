@@ -5,7 +5,10 @@
 
     <title>Vehicle Damage Detection</title>
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
 
 </head>
 
@@ -13,17 +16,26 @@
 
     <div class="container">
 
-        <h1>🚗 Vehicle Damage Detection</h1>
+        <h1>
+            🚗 Vehicle Damage Detection
+        </h1>
 
-        <p>Upload a vehicle image to detect damages</p>
+        <p>
+            Upload vehicle image to detect damages
+        </p>
 
-        <input type="file" id="imageInput">
+        <input
+            type="file"
+            id="imageInput"
+        >
 
         <button onclick="uploadImage()">
             Detect Damage
         </button>
 
         <div id="loading"></div>
+
+        <div id="preview"></div>
 
         <div id="result"></div>
 
