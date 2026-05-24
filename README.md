@@ -32,7 +32,8 @@ Requests
 Pillow
 OpenCV
 NumPy
-   ⚙️ How It Works 
+
+     ⚙️ How It Works 
 
    
 User uploads a vehicle image   
