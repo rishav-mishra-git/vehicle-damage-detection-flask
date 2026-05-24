@@ -17,17 +17,13 @@ async function uploadImage() {
 
     document.getElementById("preview").innerHTML = `
 
-        <h3>Uploaded Image</h3>
+        <h2>Uploaded Image</h2>
 
-        <img
-            src="${previewURL}"
-            width="500"
-            style="border-radius:10px;"
-        >
+        <img src="${previewURL}" width="600">
     `;
 
     document.getElementById("loading").innerHTML =
-        "<p>Detecting damages...</p>";
+        "🔍 Analyzing vehicle damage...";
 
     const formData = new FormData();
 
@@ -42,6 +38,26 @@ async function uploadImage() {
 
     const data = await response.json();
 
+    let totalDamages = data.damages.length;
+
+    let severity = "Low";
+
+    let severityClass = "low";
+
+    if (data.total_cost > 25000) {
+
+        severity = "High";
+
+        severityClass = "high";
+    }
+
+    else if (data.total_cost > 10000) {
+
+        severity = "Medium";
+
+        severityClass = "medium";
+    }
+
     let html = "";
 
     // RESULT IMAGE
@@ -52,40 +68,122 @@ async function uploadImage() {
 
         <img
             src="/${data.result_image}"
-            width="500"
-            style="border-radius:10px;"
+            width="600"
         >
 
-        <h2>
-            Total Estimated Cost:
-            ₹${data.total_cost}
-        </h2>
+        <div class="summary-cards">
+
+            <div class="card">
+
+                <h3>Total Damages</h3>
+
+                <p>${totalDamages}</p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Estimated Cost</h3>
+
+                <p>₹${data.total_cost}</p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Severity</h3>
+
+                <p class="${severityClass}">
+                    ${severity}
+                </p>
+
+            </div>
+
+        </div>
     `;
+
+    // INSURANCE MESSAGE
+
+    if (data.total_cost > 25000) {
+
+        html += `
+            <div class="damage-card">
+
+                ⚠ Insurance Claim Recommended
+
+            </div>
+        `;
+    }
+
+    else if (data.total_cost > 10000) {
+
+        html += `
+            <div class="damage-card">
+
+                ⚠ Moderate Damage Detected
+
+            </div>
+        `;
+    }
+
+    else {
+
+        html += `
+            <div class="damage-card">
+
+                ✅ Minor Damage Detected
+
+            </div>
+        `;
+    }
 
     // DAMAGE DETAILS
 
     data.damages.forEach(d => {
 
+        let confidencePercent =
+            Math.round(d.confidence * 100);
+
+        let barClass = "low";
+
+        if (confidencePercent > 80) {
+
+            barClass = "high";
+        }
+
+        else if (confidencePercent > 60) {
+
+            barClass = "medium";
+        }
+
         html += `
 
-            <div
-                style="
-                    background:#f4f4f4;
-                    padding:10px;
-                    margin:10px;
-                    border-radius:8px;
-                "
-            >
+            <div class="damage-card">
 
-                <strong>${d.damage}</strong>
+                <h3>${d.damage}</h3>
 
-                <br>
+                <p>
+                    Estimated Cost:
+                    ₹${d.cost}
+                </p>
 
-                Confidence: ${d.confidence}
+                <p>
+                    Confidence:
+                    ${confidencePercent}%
+                </p>
 
-                <br>
+                <div class="progress-bar">
 
-                Estimated Cost: ₹${d.cost}
+                    <div
+                        class="progress ${barClass}"
+                        style="width:${confidencePercent}%"
+                    >
+
+                        ${confidencePercent}%
+
+                    </div>
+
+                </div>
 
             </div>
         `;
