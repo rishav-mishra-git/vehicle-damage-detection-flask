@@ -32,3 +32,11 @@ Requests
 Pillow
 OpenCV
 NumPy
+⚙️ How It Works
+User uploads a vehicle image
+Frontend sends image to Flask backend
+Flask API sends image to Roboflow model
+AI model detects damages
+Backend draws bounding boxes
+Damage report and repair cost are generated
+Results displayed on webpage
