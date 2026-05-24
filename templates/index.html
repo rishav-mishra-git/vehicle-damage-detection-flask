@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Vehicle Damage Detection</title>
+    <title>AI Vehicle Damage Detection</title>
 
     <link
         rel="stylesheet"
@@ -17,21 +17,26 @@
     <div class="container">
 
         <h1>
-            🚗 Vehicle Damage Detection
+            🚗 AI Vehicle Damage Detection
         </h1>
 
-        <p>
+        <p class="subtitle">
             Upload vehicle image to detect damages
+            and estimate repair cost
         </p>
 
-        <input
-            type="file"
-            id="imageInput"
-        >
+        <div class="upload-section">
 
-        <button onclick="uploadImage()">
-            Detect Damage
-        </button>
+            <input
+                type="file"
+                id="imageInput"
+            >
+
+            <button onclick="uploadImage()">
+                Detect Damage
+            </button>
+
+        </div>
 
         <div id="loading"></div>
 
