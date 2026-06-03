@@ -4,7 +4,7 @@ An AI-powered full-stack web application that detects vehicle damages such as de
 
 The system analyzes uploaded vehicle images, identifies damaged areas, draws bounding boxes, and estimates real-world repair costs.
 
-🔥 Features
+🔥 Features of this model
 
 ✅ Vehicle damage detection using AI
 ✅ Bounding box visualization
