@@ -1,53 +1,106 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>AI Vehicle Damage Detection</title>
+    <meta charset="UTF-8">
 
-    <link
-        rel="stylesheet"
-        href="/static/style.css"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Vehicle Damage Detection</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
 
 </head>
 
 <body>
 
-    <div class="container">
+    <nav class="navbar">
 
-        <h1>
-            🚗 AI Vehicle Damage Detection
-        </h1>
+        <div class="logo">
+            🚗 AutoInspect AI
+        </div>
 
-        <p class="subtitle">
-            Upload vehicle image to detect damages
-            and estimate repair cost
+        <ul>
+
+            <li><a href="#">Home</a></li>
+
+            <li><a href="#upload">Detect</a></li>
+
+            <li><a href="#result">Results</a></li>
+
+        </ul>
+
+    </nav>
+
+    <section class="hero">
+
+        <h1>AI Vehicle Damage Detection</h1>
+
+        <p>
+            Detect dents and scratches instantly and estimate repair costs using Artificial Intelligence.
         </p>
 
-        <div class="upload-section">
+    </section>
+
+    <section id="upload" class="upload-container">
+
+        <div class="upload-card">
+
+            <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+
+            <h2>Upload Vehicle Image</h2>
+
+            <p>Select a clear image of your vehicle</p>
 
             <input
                 type="file"
                 id="imageInput"
+                accept="image/*"
             >
 
             <button onclick="uploadImage()">
+                <i class="fa-solid fa-magnifying-glass"></i>
                 Detect Damage
             </button>
 
         </div>
 
+    </section>
+
+    <section class="dashboard">
+
         <div id="loading"></div>
 
-        <div id="preview"></div>
+        <div class="image-section">
+
+            <div id="preview" class="image-card"></div>
+
+            <div id="resultImage" class="image-card"></div>
+
+        </div>
 
         <div id="result"></div>
 
-    </div>
+    </section>
+
+    <footer>
+
+        <p>
+
+            Developed by <b>Rishav Mishra</b>
+
+        </p>
+
+    </footer>
 
     <script src="/static/script.js"></script>
 
 </body>
 
 </html>
+```
+
