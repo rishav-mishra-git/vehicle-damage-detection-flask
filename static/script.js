@@ -1,4 +1,4 @@
-```javascript
+
 async function uploadImage() {
 
     const input = document.getElementById("imageInput");
@@ -198,4 +198,4 @@ async function uploadImage() {
     }
 
 }
-```
+
