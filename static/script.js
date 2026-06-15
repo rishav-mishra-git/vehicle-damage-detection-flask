@@ -1,195 +1,201 @@
+```javascript
 async function uploadImage() {
 
     const input = document.getElementById("imageInput");
-
     const file = input.files[0];
 
     if (!file) {
-
-        alert("Please select an image");
-
+        alert("Please select an image.");
         return;
     }
 
-    // IMAGE PREVIEW
-
+    // Show preview
     const previewURL = URL.createObjectURL(file);
 
     document.getElementById("preview").innerHTML = `
-
-        <h2>Uploaded Image</h2>
-
-        <img src="${previewURL}" width="600">
+        <h2>📷 Uploaded Image</h2>
+        <img src="${previewURL}" alt="Uploaded Image">
     `;
 
-    document.getElementById("loading").innerHTML =
-        "🔍 Analyzing vehicle damage...";
+    document.getElementById("loading").innerHTML = `
+        <div style="text-align:center;padding:20px;">
+            <h2>🤖 AI is analyzing your vehicle...</h2>
+            <p>Please wait a few seconds.</p>
+        </div>
+    `;
+
+    document.getElementById("result").innerHTML = "";
+    document.getElementById("resultImage").innerHTML = "";
 
     const formData = new FormData();
-
     formData.append("image", file);
 
-    const response = await fetch("/predict", {
+    try {
 
-        method: "POST",
+        const response = await fetch("/predict", {
+            method: "POST",
+            body: formData
+        });
 
-        body: formData
-    });
+        const data = await response.json();
 
-    const data = await response.json();
+        document.getElementById("loading").innerHTML = "";
 
-    let totalDamages = data.damages.length;
+        let severity = "Low";
+        let severityClass = "low";
 
-    let severity = "Low";
+        if (data.total_cost > 25000) {
+            severity = "High";
+            severityClass = "high";
+        }
+        else if (data.total_cost > 10000) {
+            severity = "Medium";
+            severityClass = "medium";
+        }
 
-    let severityClass = "low";
-
-    if (data.total_cost > 25000) {
-
-        severity = "High";
-
-        severityClass = "high";
-    }
-
-    else if (data.total_cost > 10000) {
-
-        severity = "Medium";
-
-        severityClass = "medium";
-    }
-
-    let html = "";
-
-    // RESULT IMAGE
-
-    html += `
-
-        <h2>Detected Damage</h2>
-
-        <img
-            src="/${data.result_image}"
-            width="600"
-        >
+        let html = `
 
         <div class="summary-cards">
 
             <div class="card">
-
                 <h3>Total Damages</h3>
-
-                <p>${totalDamages}</p>
-
+                <p>${data.damages.length}</p>
             </div>
 
             <div class="card">
-
                 <h3>Estimated Cost</h3>
-
                 <p>₹${data.total_cost}</p>
-
             </div>
 
             <div class="card">
-
                 <h3>Severity</h3>
-
                 <p class="${severityClass}">
                     ${severity}
                 </p>
-
             </div>
 
         </div>
-    `;
 
-    // INSURANCE MESSAGE
+        `;
 
-    if (data.total_cost > 25000) {
+        if (severity === "High") {
 
-        html += `
+            html += `
             <div class="damage-card">
 
-                ⚠ Insurance Claim Recommended
+            🚨 High Damage Detected
+
+            <br><br>
+
+            Insurance claim is recommended.
 
             </div>
-        `;
-    }
-
-    else if (data.total_cost > 10000) {
-
-        html += `
-            <div class="damage-card">
-
-                ⚠ Moderate Damage Detected
-
-            </div>
-        `;
-    }
-
-    else {
-
-        html += `
-            <div class="damage-card">
-
-                ✅ Minor Damage Detected
-
-            </div>
-        `;
-    }
-
-    // DAMAGE DETAILS
-
-    data.damages.forEach(d => {
-
-        let confidencePercent =
-            Math.round(d.confidence * 100);
-
-        let barClass = "low";
-
-        if (confidencePercent > 80) {
-
-            barClass = "high";
+            `;
         }
 
-        else if (confidencePercent > 60) {
+        else if (severity === "Medium") {
 
-            barClass = "medium";
+            html += `
+            <div class="damage-card">
+
+            ⚠ Moderate Damage
+
+            <br><br>
+
+            Repair soon to avoid further issues.
+
+            </div>
+            `;
         }
 
-        html += `
+        else {
+
+            html += `
+            <div class="damage-card">
+
+            ✅ Minor Damage
+
+            <br><br>
+
+            Basic repair is sufficient.
+
+            </div>
+            `;
+        }
+
+        data.damages.forEach(d => {
+
+            const confidence =
+                Math.round(d.confidence * 100);
+
+            let barClass = "low";
+
+            if (confidence > 80)
+                barClass = "high";
+
+            else if (confidence > 60)
+                barClass = "medium";
+
+            html += `
 
             <div class="damage-card">
 
-                <h3>${d.damage}</h3>
+                <h2>${d.damage}</h2>
 
                 <p>
-                    Estimated Cost:
-                    ₹${d.cost}
+
+                Repair Cost:
+                ₹${d.cost}
+
                 </p>
 
                 <p>
-                    Confidence:
-                    ${confidencePercent}%
+
+                Confidence:
+                ${confidence}%
+
                 </p>
 
                 <div class="progress-bar">
 
                     <div
                         class="progress ${barClass}"
-                        style="width:${confidencePercent}%"
+                        style="width:${confidence}%"
                     >
 
-                        ${confidencePercent}%
+                        ${confidence}%
 
                     </div>
 
                 </div>
 
             </div>
+
+            `;
+        });
+
+        document.getElementById("result").innerHTML = html;
+
+    }
+
+    catch (error) {
+
+        document.getElementById("loading").innerHTML = "";
+
+        document.getElementById("result").innerHTML = `
+
+        <div class="damage-card">
+
+        ❌ Error while processing image.
+
+        <br><br>
+
+        Please try again.
+
+        </div>
+
         `;
-    });
+    }
 
-    document.getElementById("loading").innerHTML = "";
-
-    document.getElementById("result").innerHTML = html;
 }
+```
