@@ -7,17 +7,13 @@ from PIL import ImageDraw
 
 app = Flask(__name__)
 
-# ==========================
-# ROBOFLOW CONFIG
-# ==========================
+
 
 API_KEY = "9PU75Z9tiNgXhZlgx5cW"
 
 MODEL_URL = "https://detect.roboflow.com/car_dent_scratch_detection-1-mczqd/1"
 
-# ==========================
-# FOLDERS
-# ==========================
+
 
 UPLOAD_FOLDER = "uploads"
 
@@ -33,9 +29,7 @@ os.makedirs(
     exist_ok=True
 )
 
-# ==========================
-# DAMAGE COST DATABASE
-# ==========================
+
 
 damage_costs = {
 
@@ -72,9 +66,7 @@ damage_costs = {
 
 }
 
-# ==========================
-# HOME PAGE
-# ==========================
+
 
 @app.route("/")
 def home():
@@ -83,9 +75,7 @@ def home():
         "index.html"
     )
 
-# ==========================
-# PREDICT API
-# ==========================
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -112,9 +102,7 @@ def predict():
     )
 
     file.save(upload_path)
-        # ==========================
-    # SEND IMAGE TO ROBOFLOW
-    # ==========================
+        
 
     with open(upload_path, "rb") as img:
 
@@ -165,9 +153,7 @@ def predict():
         image
 
     )
-        # ==========================
-    # PROCESS PREDICTIONS
-    # ==========================
+        
 
     for p in predictions:
 
@@ -256,9 +242,7 @@ def predict():
             fill="red"
 
         )
-            # ==========================
-    # SAVE DETECTED IMAGE
-    # ==========================
+            
 
     result_filename = "detected_" + filename
 
@@ -304,12 +288,10 @@ def predict():
 
         "insurance": insurance,
 
-        "result_image": result_path.replace("\\\\", "/")
+        "result_image": result_filename
 
     }
-        # ==========================
-    # RETURN RESPONSE
-    # ==========================
+        
 
     return jsonify(
 
@@ -318,9 +300,7 @@ def predict():
     )
 
 
-# ==========================
-# HEALTH CHECK
-# ==========================
+
 
 @app.route("/health")
 def health():
@@ -336,9 +316,7 @@ def health():
     })
 
 
-# ==========================
-# RUN APPLICATION
-# ==========================
+
 
 if __name__ == "__main__":
 
