@@ -1,4 +1,3 @@
-
 async function uploadImage() {
 
     const input = document.getElementById("imageInput");
@@ -9,7 +8,7 @@ async function uploadImage() {
         return;
     }
 
-    // Show preview
+    
     const previewURL = URL.createObjectURL(file);
 
     document.getElementById("preview").innerHTML = `
@@ -38,8 +37,20 @@ async function uploadImage() {
         });
 
         const data = await response.json();
+        console.log(data);
+        console.log(data.result_image);  
 
         document.getElementById("loading").innerHTML = "";
+         if (data.result_image) {
+
+            document.getElementById("resultImage").innerHTML = `
+              <h2>🎯 Detected Image</h2>
+              <img src="${window.location.origin}/static/results/${data.result_image}?t=${Date.now()}"
+                   alt="Detected Image"
+                   style="width:100%;border-radius:10px;">
+            `;
+
+        }
 
         let severity = "Low";
         let severityClass = "low";
