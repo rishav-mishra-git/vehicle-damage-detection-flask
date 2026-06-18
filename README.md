@@ -1,57 +1,190 @@
-🚗 Vehicle Damage Detection System
+# 🚗 Vehicle Damage Detection and Repair Cost Estimation
 
-An AI-powered full-stack web application that detects vehicle damages such as dents, scratches, broken parts, and glass damage using Computer Vision and Object Detection.
+## 📌 Overview
 
-The system analyzes uploaded vehicle images, identifies damaged areas, draws bounding boxes, and estimates real-world repair costs.
+Vehicle Damage Detection and Repair Cost Estimation is an AI-powered web application that detects damages such as dents and scratches on vehicles from uploaded images and provides an estimated repair cost. The project uses a trained object detection model to automate vehicle inspection and make the damage assessment process faster and more accurate.
 
-🔥 Features of this model
+---
 
-✅ Vehicle damage detection using AI
-✅ Bounding box visualization
-✅ Damage confidence score
-✅ Real-world repair cost estimation
-✅ Upload image preview
-✅ Flask backend API
-✅ HTML/CSS/JavaScript frontend
-✅ Roboflow YOLO model integration
-✅ Professional full-stack architecture
+## ✨ Features
 
-🛠 Technologies Used
-Frontend
-HTML
-CSS
-JavaScript
-Backend
-Python
-Flask
-AI / Computer Vision
-Roboflow
-YOLO Object Detection
-Libraries
-Requests
-Pillow
-OpenCV
-NumPy
+* Upload vehicle images for analysis
+* Detect dents and scratches using an AI model
+* Display detected damage with bounding boxes
+* Estimate repair cost based on detected damage
+* Simple and user-friendly web interface
+* Fast inference using a cloud-hosted detection API
 
-     ⚙️ How It Works 
+---
 
-   
-User uploads a vehicle image   
+## 🛠️ Tech Stack
 
+### Frontend
 
-Frontend sends image to Flask backend
+* HTML
+* CSS
+* JavaScript
 
+### Backend
 
-Flask API sends image to Roboflow model
+* Python
+* Flask
 
+### AI & Computer Vision
 
-AI model detects damages
+* Roboflow Object Detection Model
+* Pillow (PIL) for image processing
 
+### Deployment & Version Control
 
-Backend draws bounding boxes
+* GitHub
+* Hugging Face Spaces (optional deployment)
 
+---
 
-Damage report and repair cost are generated
+## 📂 Project Structure
 
+```
+Vehicle-Damage-Detection/
+│
+├── app.py
+├── requirements.txt
+├── static/
+│   ├── uploads/
+│   └── results/
+├── templates/
+│   └── index.html
+├── README.md
+└── assets/
+```
 
-Results displayed on webpage
+---
+
+## ⚙️ Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/Vehicle-Damage-Detection.git
+```
+
+### 2. Navigate to the project
+
+```bash
+cd Vehicle-Damage-Detection
+```
+
+### 3. Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+Activate it:
+
+**Windows**
+
+```bash
+venv\Scripts\activate
+```
+
+**Mac/Linux**
+
+```bash
+source venv/bin/activate
+```
+
+### 4. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Run the application
+
+```bash
+python app.py
+```
+
+Open your browser and visit:
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+## 🚀 How It Works
+
+1. User uploads a vehicle image.
+2. Flask sends the image to the trained detection model.
+3. The AI model identifies dents and scratches.
+4. Bounding boxes are drawn around damaged areas.
+5. Repair cost is estimated based on the detected damage.
+6. The processed image and estimated cost are displayed to the user.
+
+---
+
+## 📷 Sample Workflow
+
+```
+Vehicle Image
+      │
+      ▼
+Upload via Web Interface
+      │
+      ▼
+AI Damage Detection
+      │
+      ▼
+Bounding Box Generation
+      │
+      ▼
+Repair Cost Estimation
+      │
+      ▼
+Final Result Display
+```
+
+---
+
+## 🎯 Applications
+
+* Automobile insurance claim processing
+* Vehicle inspection centers
+* Car rental companies
+* Used car marketplaces
+* Automobile service centers
+
+---
+
+## 🔮 Future Enhancements
+
+* Support for multiple damage categories
+* Severity level classification
+* Mobile application integration
+* Real-time video damage detection
+* Automatic report generation in PDF format
+* Deep learning-based repair cost prediction
+
+---
+
+## 👨‍💻 Author
+
+**Rishav Mishra**
+
+* B.Tech – Computer Science & Engineering (AI & ML)
+* Passionate about Artificial Intelligence, Machine Learning, and Computer Vision
+
+---
+
+## 📄 License
+
+This project is developed for educational and research purposes. Feel free to fork and improve it for learning and non-commercial use.
+
+---
+
+## ⭐ If you found this project useful
+
+Please consider giving the repository a **Star ⭐** and sharing your feedback.
+
