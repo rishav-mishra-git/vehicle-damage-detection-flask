@@ -65,7 +65,7 @@ Vehicle-Damage-Detection/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/Vehicle-Damage-Detection.git
+git clone https://github.com/mrishav65/Vehicle-Damage-Detection.git
 ```
 
 ### 2. Navigate to the project
