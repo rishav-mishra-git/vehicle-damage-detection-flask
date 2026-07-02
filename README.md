@@ -171,7 +171,7 @@ Final Result Display
 
 ## 👨‍💻 Author
 
-**Rishav Mishra**
+**Rishav **
 
 * B.Tech – Computer Science & Engineering (AI & ML)
 * Passionate about Artificial Intelligence, Machine Learning, and Computer Vision
